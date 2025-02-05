@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Evolution of Telephone</title>
+
+        <!-- Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@400;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Custom CSS -->
+        <link href="styles.css" rel="stylesheet" />
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+        <!-- jQuery Script -->
+        <script>
+            $(document).ready(function () {
+                // Hide content initially
+                $(".content, .vintage-header, .side-nav").css("opacity", 0);
+
+                // Loading screen animation
+                // Wait 3 seconds before starting the fade out animation
+                setTimeout(function () {
+                    $(".loader-container").fadeOut(1500, function () {
+                        $(this).remove();
+                        $(".content, .vintage-header, .side-nav").animate(
+                            { opacity: 1 },
+                            1500
+                        );
+                    });
+                }, 3000);
+
+                // Navigation toggle
+                $(".nav-handle").click(function () {
+                    // Toggle the 'collapsed' class on the side navigation
+                    $(".side-nav").toggleClass("collapsed");
+                });
+
+                // Smooth scroll
+                $(".nav-item").click(function (e) {
+                    e.preventDefault();
+
+                    // Get the target element's selector from the href attribute
+                    let target = $($(this).attr("href"));
+
+                    // Animate scroll to target element over 1 second
+                    $("html, body").animate(
+                        {
+                            scrollTop: target.offset().top,
+                        },
+                        1000
+                    );
+                });
+
+                // Update active nav item on scroll
+                $(window).scroll(function () {
+                    // Get current scroll position
+                    let scrollPosition = $(window).scrollTop();
+
+                    // Calculate total scrollable height
+                    let height = $(document).height() - $(window).height();
+
+                    // Calculate scroll progress as a percentage
+                    let progress = (scroll / height) * 100;
+
+                    // Update progress bar width based on scroll percentage
+                    $(".progress-bar").css("width", progress + "%");
+
+                    // Update active navigation item
+                    $(".timeline-item").each(function () {
+                        // Calculate the top position of the item (with 200px offset for better UX)
+                        let top = $(this).offset().top - 200;
+
+                        // Calculate the bottom position of the item
+                        let bottom = top + $(this).height();
+
+                        if (scrollPosition >= top && scrollPosition <= bottom) {
+                            let currentEra = $(this).data("era");
+                            $(".nav-item").removeClass("active");
+
+                            // Add 'active' class to the navigation item matching current era
+                            $('.nav-item[data-era="' + currentEra + '"]').addClass("active");
+                        }
+                    });
+                });
+
+                // Reveal animations on scroll
+                $(window).scroll(function () {
+                    $(".timeline-item").each(function () {
+                        // If the item is 75% visible in the viewport
+                        if (
+                            $(this).offset().top <=
+                            $(window).scrollTop() + $(window).height() * 0.75
+                        ) {
+                            // Add 'reveal' class to trigger animation
+                            $(this).addClass("reveal");
+                        }
+                    });
+                });                
+
+                // Scroll to first era when clicking "Begin the Journey"
+                $('.scroll-hint').click(function() {
+                    // Animate scroll to the first era section over 1 second
+                    $('html, body').animate({
+                        scrollTop: $('#era1').offset().top
+                    }, 1000);
+                });
+
+                // Scroll to introduction when clicking "Back to Top"
+                $('.back-to-top').click(function() {
+                    $('html, body').animate({
+                        // Animate scroll to the header section over 1 second
+                        scrollTop: $('#header').offset().top
+                    }, 1000);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <!-- Loading Screen -->
+        <div class="loader-container">
+            <div class="loader"></div>
+            <p class="loading-text">Loading the Journey Through Time...</p>
+        </div>
+
+        <!-- Progress Bar for Scroll Position -->
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Side Navigation -->
+        <nav class="side-nav collapsed">
+
+            <!-- Navigation Toggle Handle -->
+            <div class="nav-handle">
+                <span></span>
+            </div>
+
+            <!-- Era Navigation -->
+            <!-- Each nav-item represents a different time period in telephone history -->
+            <ul>
+                <li>
+                    <a href="#header" class="nav-item active" data-era="intro">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">Introduction</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era1" class="nav-item" data-era="1870s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            First Call <small>1870s</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era2" class="nav-item" data-era="1920s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            Golden Age <small>1920s</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era3" class="nav-item" data-era="1950s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            Global Era <small>1950s</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era4" class="nav-item" data-era="1970s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            Mobile Revolution <small>1970s</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era5" class="nav-item" data-era="1990s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            Digital Dawn <small>1990s</small>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#era6" class="nav-item" data-era="2000s">
+                        <span class="nav-dot"></span>
+                        <span class="nav-label">
+                            Smart Era <small>2000s</small>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Header -->
+        <header id="header" class="vintage-header">
+            <h1>The Evolution of Telephone</h1>
+            <div class="subtitle">
+                From Bell's First Call to Modern Communication
+            </div>
+            <div class="timeline-intro">
+                Journey through time and discover how a simple voice transmission device transformed into the powerful communication tools we use today. Experience the remarkable story of human innovation and connection.
+            </div>
+            <div class="scroll-hint">
+                <p>Begin the Journey</p>
+                <span class="scroll-arrow-down"></span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Era 1: 1870s -->
+            <section id="era1" class="timeline-item" data-era="1870s">
+                <div class="year-marker">1876</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/Telephone Patent.jpg" alt="An Image of Telephone Patent Awarded to Alexander Graham Bell">
+                            <figcaption> 
+                                <a href="https://commons.wikimedia.org/wiki/File:USPTO_Telephone_Patent_No._174465.jpg" target="_blank" rel="noopener noreferrer">Bell's Patent</a>
+                                via Wikimedia Commons
+                            </figcaption>
+                        </figure>
+    
+                        <div class="image-gallery">                            
+                            <figure>
+                                <img src="images/Candlestick Telephone, 1897.png" alt="An Image of Candlestick Telephone, 1897">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/telephone/images-videos#/media/1/585993/120258" target="_blank" rel="noopener noreferrer">Candlestick Telephone, 1897</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/AT&T Magneto Wall Telephone, 1907.png" alt="An Image of AT&T Magneto Wall Telephone, 1907">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/telephone/images-videos#/media/1/585993/69324" target="_blank" rel="noopener noreferrer">AT&T Magneto Wall Telephone, 1907</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                        </div>
+    
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls poster="images/How the telephone was invented video poster.png">
+                                    <source src="videos/How the telephone was invented.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://www.britannica.com/video/Overview-invention-telephone-focus-work-Alexander-Graham/-192158" target="_blank" rel="noopener noreferrer">How the telephone was invented</a>
+                                via Encyclopædia Britannica
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Birth of Telecommunication</h2>
+
+                        <div class="story-quote">
+                            "Mr. Watson, come here, I want to see you."
+                            <span class="quote-author">
+                                - Alexander Graham Bell's historic first words over telephone, March 10, 1876
+                            </span>
+                        </div>
+
+                        <p class="historical-context">
+                            In 1871, Alexander Graham Bell began pursuing the idea of transmitting sound electronically, inspired by his background in teaching the deaf. His efforts paid off in 1876 when he discovered the telephone principle and collaborated with Thomas Watson to develop the first telephone connection. This marked the beginning of a new era in communication, allowing people to connect in real-time despite distance. At the heart of this innovation was a dream that many attempted to realize, but only a few, like Bell, achieved it.
+                        </p>
+                        <p class="historical-context">
+                            Bell's patent granted him legal rights to this groundbreaking invention, protecting his technology as demand grew. In 1881, the first long-distance phone service was established, which began connecting people across states and countries. 
+                        </p>
+                        <p class="historical-context">
+                            Another milestone was reached in 1915, with Bell and Watson's first official transcontinental call. Bell, stationed in New York City, connected with Watson, who was in San Francisco, in a moment that showcased the promise of long-distance telecommunication.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Pioneering Breakthroughs:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://www.scienceshot.com/post/bell-vs-gray-from-patent-wars-to-telephone-revolution" target="_blank" rel="noopener noreferrer">
+                                        <strong>1876:</strong> Bell patents the telephone, beating rival Elisha Gray by just hours
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://en.wikipedia.org/wiki/Bell_Telephone_Company" target="_blank" rel="noopener noreferrer">
+                                        <strong>1877:</strong> Bell Telephone Company founded, setting the stage for a communication empire
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.nps.gov/subjects/nationalhistoriclandmarks/site-of-the-first-telephone-exchange.htm" target="_blank" rel="noopener noreferrer">
+                                        <strong>1878:</strong> First telephone exchange opens in New Haven, Connecticut
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://ethw.org/Telephone_Transmission#Early_Years" target="_blank" rel="noopener noreferrer">
+                                        <strong>1881:</strong> First long-distance line connects Boston and Providence
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.pcworld.com/article/431476/conference-calls-a-waste-of-time-in-1915-this-one-made-history.html" target="_blank" rel="noopener noreferrer">
+                                        <strong>1915:</strong> Bell and Watson reunite for the first transcontinental call
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Era 2: 1920s -->
+            <section id="era2" class="timeline-item" data-era="1920s">
+                <div class="year-marker">1920s</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/Site of the First Telephone Exchange.png" alt="An Image of the Site of the First Telephone Exchange">
+                            <figcaption>
+                                <a href="https://www.nps.gov/subjects/nationalhistoriclandmarks/site-of-the-first-telephone-exchange.htm" target="_blank" rel="noopener noreferrer">Site of the First Telephone Exchange in New Haven</a>
+                                via National Park Service
+                            </figcaption>
+                        </figure>
+    
+                        <div class="image-gallery">
+                            <figure>
+                                <img src="images/AT&T Desk Telephone with E1A Handset, 1928.png" alt="An Image of AT&T Desk Telephone with E1A Handset, 1928">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/telephone/images-videos#/media/1/585993/69325" target="_blank" rel="noopener noreferrer">Desk Telephone, 1928</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/Henry Dreyfuss's Model 302 Telephone.jpg" alt="An Image of Henry Dreyfuss's Model 302 Telephone">
+                                <figcaption>
+                                    <a href="https://www.cooperhewitt.org/2014/11/06/model-302-telephone-henry-dreyfuss/" target="_blank" rel="noopener noreferrer">Model 302 Telephone</a>
+                                    via Cooper Hewitt
+                                </figcaption>
+                            </figure>
+                        </div>
+    
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls poster="images/Bell System Telephone Switchboard Operators Poster.jpg">
+                                    <source src="videos/Bell System Telephone Switchboard Operators - Library and Archives Canada.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://youtu.be/2BzRjfOoiVQ?si=cFslWY_VVXOs3Tjq" target="_blank" rel="noopener noreferrer">Bell System Telephone Switchboard Operators</a>
+                                via Library and Archives Canada on YouTube
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Golden Age of Telephony</h2>
+
+                        <div class="story-quote">
+                            "Number please?"
+                            <span class="quote-author">
+                                - The familiar greeting of telephone operators that defined an era
+                            </span>
+                        </div>
+
+                        <p class="historical-context">
+                            During this period, telecommunications expanded into both homes and offices. President Herbert Hoover became the first U.S. president to use a phone from his office, marking a shift in the device's significance within political and business spheres. The Bell System also employed thousands of switchboard operators, predominantly women, to manage the growing number of calls across the U.S. Public reliance on phone operators helped create job opportunities, especially for women, in a rapidly growing sector.
+                        </p>
+
+                        <p class="historical-context">
+                            In the 1930s, industrial designer Henry Dreyfus developed the Model 302, a telephone design featuring an integrated ringer, which made the device more compact and practical. This model represented the first true "modern" telephone, moving away from older models’ separate ringer boxes and evolving into a simpler, more functional design that would inspire various adaptations for years to come.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Key Developments:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://www.history.com/this-day-in-history/herbert-hoover-has-telephone-installed-in-oval-office" target="_blank" rel="noopener noreferrer">
+                                        Presidential adoption of office telephone
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.history.com/news/rise-fall-telephone-switchboard-operators" target="_blank" rel="noopener noreferrer">
+                                        Employment opportunities for women as operators (Hello Girls)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.cooperhewitt.org/2014/11/06/model-302-telephone-henry-dreyfuss/" target="_blank" rel="noopener noreferrer">
+                                        1930s: Introduction of the Model 302 telephone
+                                    </a>                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Era 3: 1950s -->
+            <section id="era3" class="timeline-item" data-era="1950s">
+                <div class="year-marker">1950s</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/A Crossbar-type Electromechanical Telephone Switching System from the 1960s.png" alt="An Image of A Crossbar-type Electromechanical Telephone Switching System from the 1960s">
+                            <figcaption>
+                                <a href="https://www.britannica.com/technology/telephone/images-videos#/media/1/585993/120851" target="_blank" rel="noopener noreferrer">A Crossbar-type Electromechanical Telephone Switching System from the 1960s</a>
+                                via Encyclopædia Britannica
+                            </figcaption>
+                        </figure>
+    
+                        <div class="image-gallery">
+                            <figure>
+                                <img src="images/Push-button Telephone, 1968.jpg" alt="An Image of AT&T Push-button Telephone Made by Western Electric Model 1500D, 1968">
+                                <figcaption>
+                                    <a href="https://commons.wikimedia.org/wiki/File:WE1500D10buttonDSCN0217.JPG" target="_blank" rel="noopener noreferrer">Push-button Telephone, 1968</a>
+                                    via Wikimedia Commons
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/AT&T Touch-Tone Telephone, 1968.png" alt="An Image of AT&T Touch-Tone Telephone, 1968">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/telephone/images-videos#/media/1/585993/69328" target="_blank" rel="noopener noreferrer">AT&T Touch-Tone Telephone, 1968</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>                    
+                        </div>
+    
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls>
+                                    <source src="videos/Push-button Phone System with Touch-tone Dialing, 1963.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://youtu.be/OTzEOuVLiZ4?si=03wW83P71Rr_Xl2p" target="_blank" rel="noopener noreferrer">Bell Telephone Rolled Out the First Push-button Phone System with Touch-tone Dialing, 1963</a>
+                                via Boston TV: Tech Marvels & Cool Discoveries on YouTube
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Global Communication Era</h2>
+
+                        <div class="story-quote">
+                            "First Call Made by Phone to Europe"
+                            <span class="quote-author">
+                                - New York Times Front Page Headline, 1956
+                            </span>
+                        </div>
+
+                        <p class="historical-context">
+                            The mid-20th century saw telecommunications go global. In 1956, the first transatlantic cable was laid, providing a faster, more reliable means of making international calls without manual intervention. This milestone helped connect continents, allowing people to communicate globally on a much larger scale.
+                        </p>
+                        <p class="historical-context">
+                            During the 1960s, touch-tone dialing emerged as an improvement over rotary phones, using tones instead of mechanical pulses. The technology behind touch-tone dialing improved efficiency and speed, paving the way for the 911 emergency number, designated in 1968 as the standard for quick emergency response in the U.S. The 1960s also introduced the concept of videophones, though early versions were expensive and impractical. Nevertheless, they marked the beginning of visual communication, hinting at the future possibilities for real-time video calls that would later become commonplace.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Global Innovations:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://ewh.ieee.org/reg/7/canrev/cr52/CR52_TAT.pdf" target="_blank" rel="noopener noreferrer">
+                                        1956: First transatlantic telephone cable
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://blinksandbuttons.net/what-were-phones-like-in-the-1960s/" target="_blank" rel="noopener noreferrer">
+                                        1960s: Introduction of touch-tone dialing
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.engadget.com/2014-09-07-look-whos-talking-the-birth-of-the-video-phone.html" target="_blank" rel="noopener noreferrer">
+                                        1960s: Introduction of videophones
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://americanhistory.si.edu/explore/stories/9-1-1-what-your-emergency-history-raising-alarm" target="_blank" rel="noopener noreferrer">
+                                        1968: Implementation of 911 emergency number
+                                    </a>
+                                </li>    
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Era 4: 1970s -->
+            <section id="era4" class="timeline-item" data-era="1970s">
+                <div class="year-marker">1970s</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/Fax Machine Panasonic KX-F90, 1990.jpg" alt="An Image of Fax Machine Panasonic KX-F90, 1990">
+                            <figcaption>
+                                <a href="https://commons.wikimedia.org/wiki/File:Panasonic_KX-F90.jpg" target="_blank" rel="noopener noreferrer">Fax Machine Panasonic KX-F90, 1990</a>
+                                via Wikimedia Commons
+                            </figcaption>
+                        </figure>
+    
+                        <div class="image-gallery">
+                            <figure>
+                                <img src="images/Motorola - DynaTAC 8000X, 1983.png" alt="An Image of Motorola - DynaTAC 8000X, 1983">
+                                <figcaption>
+                                    <a href="https://www.mobilephonemuseum.com/phone-detail/dynatac-8000x" target="_blank" rel="noopener noreferrer">Motorola - DynaTAC 8000X, 1983</a>
+                                    via Mobile Phone Museum
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/AT&T Model HT 5200 Cordless Telephone from the Mid 1980s.jpg" alt="An Image of AT&T Model HT 5200 Cordless Telephone from the Mid 1980s">
+                                <figcaption>
+                                    <a href="https://commons.wikimedia.org/wiki/File:Panasonic_KX-F90.jpg" target="_blank" rel="noopener noreferrer">AT&T Model HT 5200 Cordless Telephone, Mid 1980s</a>
+                                    via Wikimedia Commons
+                                </figcaption>
+                            </figure>
+                        </div>
+    
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls poster="images/Motorola DynaTAC 8000X Commercial Poster.jpg">
+                                    <source src="videos/Motorola DynaTAC 8000X Commercial - The Phone Commercials Classic.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://youtu.be/HiOvOqkKVkE?si=xMf5WGBbW9j3RyNU" target="_blank" rel="noopener noreferrer">Motorola DynaTAC 8000X Commercial, 1983</a>
+                                via The Phone Commercials Classic on YouTube
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Mobile Revolution</h2>
+
+                        <div class="story-quote">
+                            "Joel, I'm calling you on a cellphone, but a real cellphone, a personal, handheld portable cellphone."
+                            <span class="quote-author">
+                                - Martin Cooper, inventor of the first mobile phone, 1973
+                            </span>
+                        </div>
+
+                        <p class="historical-context">
+                            The telecommunications industry took a giant leap in the 1970s with the creation of the microprocessor by Intel. This advancement enabled phone technology to become smaller, faster, and more efficient, which was crucial for the development of mobile phones. In 1983, Motorola released the DynaTAC, the first portable cell phone. Although it was heavy and had limited battery life, it revolutionized communication by allowing people to call from virtually anywhere.
+                        </p>
+                        <p class="historical-context">
+                            Fax machines also gained popularity in this period, allowing documents to be transmitted over phone lines. By 1985, fax machines had become a standard in offices around the world, enabling faster document sharing in professional settings. This period also marked the rise of cordless phones, enhancing mobility within homes and businesses.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Revolutionary Changes:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://timeline.intel.com/1971/the-first-programmable-microprocessor:-the-4004" target="_blank" rel="noopener noreferrer">
+                                        1970s: Creation of the microprocessor by Intel
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.cbsnews.com/news/marty-cooper-the-father-of-the-cellphone/" target="_blank" rel="noopener noreferrer">
+                                        1973: First mobile phone call by Martin Cooper
+                                    </a>                                    
+                                </li>
+                                <li>
+                                    <a href="https://www.mobilephonemuseum.com/phone-detail/dynatac-8000x" target="_blank" rel="noopener noreferrer">
+                                        1983: Motorola DynaTAC becomes commercially available
+                                    </a>                                    
+                                </li>
+                                <li>
+                                    <a href="https://www.forumone.com/insights/blog/communications-in-the-1980s-the-era-of-the-fax-machine/" target="_blank" rel="noopener noreferrer">
+                                        1980s: The era of the fax machine
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://telforcegroup.com/cordless-phones-breaking-free-from-the-telephone-cord/" target="_blank" rel="noopener noreferrer">
+                                        1980s: The rise of cordless phones
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Era 5: 1990s -->
+            <section id="era5" class="timeline-item" data-era="1990s">
+                <div class="year-marker">1990s</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/IBM Simon, 1994.jpg" alt="An Image of IBM Simon, 1994">
+                            <figcaption>
+                                <a href="https://collection.sciencemuseumgroup.org.uk/objects/co8361064/simon-mobile-communicator-1994-1995" target="_blank" rel="noopener noreferrer">IBM Simon Mobile Communicator, 1994</a>
+                                via Science Museum Group
+                            </figcaption>                            
+                        </figure>
+    
+                        <div class="image-gallery">
+                            <figure>
+                                <img src="images/AT&T Portable Cell Phone, 1993.jpg" alt="An Image of AT&T Portable Cell Phone, 1993">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/Touch-Tone-dialing-system" target="_blank" rel="noopener noreferrer">AT&T Portable Cell Phone, 1993</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/Nokia 9000 Communicator, 1996.png" alt="An Image of Nokia 9000 Communicator, 1996">
+                                <figcaption>
+                                    <a href="https://www.mobilephonemuseum.com/phone-detail/nokia-9000-communicator" target="_blank" rel="noopener noreferrer">Nokia 9000 Communicator, 1996</a>
+                                    via Mobile Phone Museum
+                                </figcaption>
+                            </figure>
+                        </div>
+    
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls poster="images/IBM Simon Advertisement Poster.jpg">
+                                    <source src="videos/IBM Simon Advertisement - Technobits.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://youtu.be/Ce4X4LiUNE0?si=SqWVPEitYMdiroTK" target="_blank" rel="noopener noreferrer">IBM Simon Advertisement, 1993</a>
+                                via Technobits on YouTube
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Digital Dawn</h2>
+
+                        <div class="story-quote">
+                            "Mobile Communications Made Simple."
+                            <span class="quote-author">
+                                - IBM Simon marketing slogan, 1994
+                            </span>
+                        </div>
+
+                        <p class="historical-context">
+                            The 1990s marked a transformative period in communication as the internet enabled Voice over Internet Protocol (VoIP), allowing people to make calls over the internet at a fraction of the cost of traditional long-distance calls. This technology quickly became a staple in business communications and eventually made its way into residential use, fundamentally changing how people connected across distances.
+                        </p>
+
+                        <p class="historical-context">
+                            In 1994, IBM launched Simon, the world's first smartphone. This groundbreaking device combined mobile phone capabilities with additional features like email, fax, and a touchscreen, hinting at a forthcoming revolution in telecommunications that would redefine mobile functionality and convenience.
+                        </p>
+
+                        <p class="historical-context">
+                            Meanwhile, Nokia brought new features to mobile devices, including picture display and caller ID, while popularizing SMS, or text messaging, as a primary communication method for mobile users. In 1995, Nokia released the first mass-produced phone capable of sending and receiving text messages, sparking the era of instant, on-the-go communication that would soon become indispensable.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Digital Breakthroughs:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://www.telecomtrainer.com/2g-second-generation-of-mobile-communication-technologies/" target="_blank" rel="noopener noreferrer">
+                                        1991: Launch of 2G digital cellular networks
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.history.com/this-day-in-history/first-sms-text-message-sent" target="_blank" rel="noopener noreferrer">
+                                        1992: First SMS text message sent
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.mobilephonemuseum.com/phone-detail/ibm-simon" target="_blank" rel="noopener noreferrer">
+                                        1994: IBM Simon - First smartphone
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.mobilephonemuseum.com/phone-detail/nokia-9000-communicator" target="_blank" rel="noopener noreferrer">
+                                        1996: Introduction of the Nokia 9000 Communicator
+                                    </a>                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Era 6: 2000s -->
+            <section id="era6" class="timeline-item" data-era="2000s">
+                <div class="year-marker">2000s</div>
+                <div class="item-content">
+                    <div class="media-content">
+                        <figure class="main-image">
+                            <img src="images/RIM BlackBerry 950.jpg" alt="An Image of RIM BlackBerry 950">
+                            <figcaption>
+                                <a href="https://commons.wikimedia.org/wiki/File:RIM_BlackBerry_950.jpg" target="_blank" rel="noopener noreferrer">RIM BlackBerry 950</a>
+                                via Wikimedia Commons
+                            </figcaption>
+                        </figure>
+    
+                        <div class="image-gallery">
+                            <figure>
+                                <img src="images/Apple iPhone, 2007.jpg" alt="An Image of Apple iPhone, 2007">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/Touch-Tone-dialing-system" target="_blank" rel="noopener noreferrer">Apple iPhone, 2007</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                            <figure>
+                                <img src="images/Blackberry Curve 8310 Smartphone, 2007.jpg" alt="An Image of Blackberry Curve 8310 Smartphone, 2007">
+                                <figcaption>
+                                    <a href="https://www.britannica.com/technology/Touch-Tone-dialing-system" target="_blank" rel="noopener noreferrer">Blackberry Curve 8310 Smartphone, 2007</a>
+                                    via Encyclopædia Britannica
+                                </figcaption>
+                            </figure>
+                        </div>
+
+                        <figure class="main-image">
+                            <img src="images/Royole Flexpai, 2018.gif" alt="An Image of Royole Flexpai Folding Display, 2018">
+                            <figcaption>
+                                <a href="https://www.theverge.com/circuitbreaker/2018/11/5/18067116/royole-flexpai-flexible-display-foldable-smartphone-tablet-pricing-features-release-date" target="_blank" rel="noopener noreferrer">Royole Flexpai Folding Display, 2018</a>
+                                via The Verge
+                            </figcaption>
+                        </figure>
+
+                        <figure class="video-figure">
+                            <div class="video-wrapper">
+                                <video controls poster="images/Top 10 Creative Phone Commercial Video Poster.jpg">
+                                    <source src="videos/Top 10 Creative Phone Commercial Video। - Know Other's.mp4" type="video/mp4">                                    
+                                </video>
+                            </div>
+                            <figcaption>
+                                <a href="https://youtu.be/h-a7Og5mG5Y?si=dm5gutYNlShMkN0d" target="_blank" rel="noopener noreferrer">Top 10 Phone Commercial Videos</a>
+                                via Know Other's on YouTube
+                            </figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="text-content">
+                        <h2>The Smart Technology Era</h2>
+
+                        <div class="story-quote">
+                            "Every once in a while, a revolutionary product comes along that changes everything."
+                            <span class="quote-author">
+                                - Steve Jobs introducing the iPhone, 2007
+                            </span>                           
+                        </div>
+
+                        <p class="historical-context">
+                            As the new millennium began, phone technology advanced rapidly. Blackberry was among the first devices to merge phone functionality with internet access, email, and a web browser, specifically targeting business professionals who required constant connectivity. In 2007, Apple launched the iPhone, revolutionizing mobile technology with its sleek, touch-based design that integrated phone, internet, and camera features. The iPhone also introduced the concept of apps, allowing users unprecedented customization and functionality.
+                        </p>
+                        <p class="historical-context">
+                            Since then, each iPhone and Android release has continued to expand the possibilities of smartphone technology. Modern smartphones now include high-quality cameras, Retina displays, and advanced processors, enabling faster processing and gaming capabilities. Today, smartphones have become essential tools for both personal and professional life, allowing users to browse the internet, take photos, manage schedules, and even monitor health data.
+                        </p>
+                        <p class="historical-context">
+                            Meanwhile, VoIP technology evolved significantly, providing businesses with cost-effective, reliable communication solutions. Modern VoIP systems now support video conferencing, remote calling, and cloud-based collaboration, enabling companies to operate globally with ease and efficiency. Over 150 years, telecommunication has evolved from Bell's telephone to a global network of multifunctional devices, with emerging technologies like AI, 5G, and augmented reality promising to further enhance connectivity and communication.
+                        </p>
+
+                        <div class="milestone">
+                            <h3>Modern Innovations:</h3>
+                            <ul class="timeline-list">
+                                <li>
+                                    <a href="https://history-computer.com/business/companies/blackberry-history/" target="_blank" rel="noopener noreferrer">
+                                        2000: Blackberry introduces the RIM 957
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.zdnet.com/article/worlds-first-3g-phone-network-goes-live/" target="_blank" rel="noopener noreferrer">
+                                        2001: 3G network goes live
+                                    </a>                                    
+                                </li>
+                                <li>
+                                    <a href="https://www.history.com/this-day-in-history/steve-jobs-debuts-the-iphone" target="_blank" rel="noopener noreferrer">
+                                        2007: Apple introduces the iPhone
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.apple.com/au/newsroom/2018/07/app-store-turns-10/" target="_blank" rel="noopener noreferrer">
+                                        2008: Launch of the App Store ecosystem
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ericsson.com/en/about-us/history/company/timeline-placeholder/timeline-2010-4g-arrives#:~:text=About%20us%20Ericsson%20history,short%20for%20Long%20Term%20Evolution." target="_blank" rel="noopener noreferrer">
+                                        2010: Introduction of 4G networks
+                                    </a>                                    
+                                </li>
+                                <li>
+                                    <a href="https://www.techrepublic.com/article/brief-history-5g/" target="_blank" rel="noopener noreferrer">
+                                        2019: Deployment of 5G networks begins
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="timeline-footer">
+            <!-- Back to Top Navigation -->
+            <div class="back-to-top">
+                <span class="scroll-arrow-up"></span>
+                <p>Back to Top</p>
+                <p class="copyright">&copy; 2024 Htet Yamin Ei</p>
+            </div>
+        </footer>
+    </body>
+</html>

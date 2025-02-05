@@ -1,0 +1,933 @@
+/* Root Variables */
+:root {
+    /* Main Colors */
+    --vintage-paper: #F4E4BC;
+    --vintage-cream: #FFF8DC;
+    --vintage-brown: #8B4513;
+    --vintage-red: #8B0000;
+    --vintage-gold: #DAA520;
+
+    /* Text Colors */
+    --text-primary: #442211;
+    --text-secondary: #666666;
+    --text-accent: #8B0000;
+
+    /* Era-specific Colors */
+    --era1-color: #8B4513;
+    --era2-color: #556B2F;
+    --era3-color: #4A4A4A;
+    --era4-color: #191970;
+    --era5-color: #2F4F4F;
+    --era6-color: #1A1A1A;
+
+    /* Loader Colors */
+    --c1: #673b14;
+    --c2: #f8b13b;    
+}
+
+/* Base Styles */
+* {
+    margin: 0;                /* Removes default margins */
+    padding: 0;               /* Removes default padding */
+    box-sizing: border-box;   /* Includes padding in element width calculations */
+}
+
+html {
+    scroll-behavior: smooth;  /* Enables smooth scrolling for anchor links */
+    font-size: 16px;            
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: var(--vintage-paper);     
+    color: var(--text-primary);
+    line-height: 1.6;                           
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+/* Styles for the initial loading screen and animation */
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--vintage-paper);
+    z-index: 1000;  /* // Ensures loader stays on top */
+}
+
+.loader {
+    width: 40px;
+    height: 80px;
+    border-top: 4px solid var(--c1);
+    border-bottom: 4px solid var(--c1);
+    /* Creates the vertical stripes pattern */
+    background: linear-gradient(
+        90deg,              /* Horizontal gradient */
+        var(--c1) 2px,      /* Dark stripe */
+        var(--c2) 0 5px,    /* Light stripe */
+        var(--c1) 0          /* Dark stripe */
+    ) 50%/7px 8px no-repeat;
+    display: grid;
+    overflow: hidden;
+    animation: l5-0 2s infinite linear; /* Main rotation animation */
+    margin-bottom: 1.5rem;
+}
+  
+/* Sand element inside the hourglass in the loading screen */
+.loader::before,
+.loader::after {
+    content: "";
+    grid-area: 1/1;             /* Position in same grid cell */
+    width: 75%;                 /* Width of liquid */
+    height: calc(50% - 4px);    /* Height of each liquid section */
+    margin: 0 auto;             /* Center horizontally */
+    border: 2px solid var(--c1);/* Container border */
+    border-top: 0;              /* No top border */
+    box-sizing: content-box;
+    border-radius: 0 0 40% 40%; /* Rounded bottom corners */
+
+    /* Masking for the sand effect */
+    mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
+                  linear-gradient(#000 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+
+    /* Sand gradient animation */
+    background: linear-gradient(
+        var(--d,0deg),
+        var(--c2) 50%,
+        #0000 0
+    ) bottom /100% 205%,
+    linear-gradient(var(--c2) 0 0) center/0 100%;    
+    background-repeat: no-repeat;
+    animation: inherit;
+    animation-name: l5-1;
+}
+  
+.loader::after {
+    transform-origin: 50% calc(100% + 2px); /* Rotation point */
+    transform: scaleY(-1);                  /* Flip vertically */
+    --s: 3px;                           
+    --d: 180deg;                         
+}
+  
+/* Main rotation animation */
+@keyframes l5-0 {
+    80% {
+      transform: rotate(0)           /* No rotation for 80% of animation */
+    }
+  
+    100% {
+      transform: rotate(0.5turn)     /* Half rotation in final 20% */
+    }
+}
+  
+/* Sand fill animation */
+@keyframes l5-1 {
+    10%,70% {
+      background-size: 100% 205%,var(--s,0) 100%    /* Sand fill effect */
+    }
+  
+    70%,100% {
+      background-position: top,center   /* Change liquid position */
+    }
+}
+
+.loading-text {
+    font-family: 'Playfair Display', serif;
+    color: var(--vintage-brown);
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Header Styles */
+.vintage-header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to bottom, var(--vintage-cream), var(--vintage-paper));
+    position: relative;
+    border-bottom: 3px double var(--vintage-brown);
+}
+
+.vintage-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    color: var(--vintage-brown);
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.2);
+}
+
+.subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--vintage-red);
+    margin-bottom: 40px;
+}
+
+.timeline-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+/* Progress Bar */
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(139, 69, 19, 0.1);
+    z-index: 100;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--vintage-gold), var(--vintage-brown));
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Navigation Components */
+/* Styles for the side navigation and progress tracking */
+.side-nav {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    background: var(--vintage-cream);
+    padding: 20px 15px;
+    border-radius: 25px 0 0 25px;
+    border: 2px solid var(--vintage-brown);
+    border-right: none;
+    box-shadow: -3px 3px 10px rgba(139, 69, 19, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.side-nav.collapsed {
+    transform: translateY(-50%) translateX(calc(100% - 30px));
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-nav li {
+    margin: 15px 0;
+}
+
+.nav-handle {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%);
+    width: 30px;
+    height: 40px;
+    background: var(--vintage-brown);
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-handle span {
+    border-right: 2px solid var(--vintage-cream);
+    border-bottom: 2px solid var(--vintage-cream);
+    width: 10px;
+    height: 10px;
+    transform: rotate(-45deg);
+    margin-right: -5px;
+    transition: transform 0.3s ease;
+}
+
+.side-nav.collapsed .nav-handle span {
+    transform: rotate(135deg);
+    margin-right: 5px;
+}
+
+/* Navigation Items */
+.nav-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;  /* Smooth hover effect */
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--vintage-brown);
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-label {
+    opacity: 0.7;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.nav-label small {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.nav-item:hover .nav-dot,
+.nav-item.active .nav-dot {
+    background: var(--vintage-brown);
+    transform: scale(1.2);
+}
+
+.nav-item:hover .nav-label,
+.nav-item.active .nav-label {
+    opacity: 1;
+}
+
+/* Main Content */
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Timeline Content Styles */
+.timeline-item {
+    margin: 150px 0;
+    opacity: 0;                     /* Initially hidden for fade-in effect */
+    transform: translateY(50px);    /* Starting position for slide-up animation */
+    transition: all 1s ease;
+    position: relative;
+}
+
+.timeline-item.reveal {
+    opacity: 1;                 /* Fully visible when revealed */
+    transform: translateY(0);   /* Final position after animation */
+}
+
+.timeline-item::before {
+    content: '';            /* Creates vertical timeline line */
+    position: absolute;
+    left: -50px;
+    top: 60px;
+    bottom: -80px;
+    width: 3px;
+    background: linear-gradient(var(--vintage-gold), var(--vintage-brown));
+    opacity: 0.3;           /* Subtle line appearance */
+}
+
+/* Item Content */
+.item-content {
+    background: var(--vintage-cream);
+    border: 2px solid var(--vintage-brown);
+    border-radius: 15px;
+    padding: 40px;
+    display: flex;
+    gap: 40px;
+    box-shadow: 5px 5px 15px rgba(139, 69, 19, 0.1);    /* Subtle shadow */
+}
+
+/* Media Content Styles */
+.media-content {
+    flex: 1;            /* Takes up available space */
+    max-width: 50%;     /* Limits width to half container */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Figure and Image Styles */
+figure {
+    position: relative;
+    margin: 0;
+    background: var(--vintage-cream);
+    border: 12px solid white;                   /* Photo frame effect */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;                             /* Contains image zoom effect */
+}
+
+.main-image {
+    transform: rotate(2deg);    /* Slight tilt */
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* Two colums */
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.image-gallery figure:nth-child(odd) {
+    transform: rotate(-3deg);   /* Alternatiing image tilt */
+}
+
+.image-gallery figure:nth-child(even) {
+    transform: rotate(3deg);
+}
+
+/* Styles for hover states, animations, and user interactions */
+.main-image:hover,
+.image-gallery figure:hover,
+.video-figure:hover {
+    transform: rotate(0) scale(1.02);               /* Removes tilt and slightly enlarges */
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);  /* Enhanced shadow */
+    z-index: 2;                                     /* Brings video forward */
+}
+
+figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;    /* Zoom effect on hover */
+}
+
+figure:hover img {
+    transform: scale(1.05); /* Image zoom on hover */
+}
+
+figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(139, 69, 19, 0.9);     /* Semi-transparent overlay */
+    color: var(--vintage-cream);
+    padding: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95em;
+    transform: translateY(100%);              /* Hidden initially */
+    transition: transform 0.3s ease;          /* Slide-up animation */
+}
+
+figcaption a {
+    color: var(--vintage-cream);
+}
+
+figure:hover figcaption {
+    transform: translateY(0);   /* Show caption on hover */
+}
+
+/* Video Container Styling */
+.video-figure {
+    transform: rotate(-2deg);
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    background: var(--vintage-cream);
+    border: none;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    transition: transform 0.3s ease;              /* Smooth transition for hover effects */
+    overflow: hidden;                             /* Contains video within bound */
+}
+
+/* Video Element Styling */
+.video-wrapper video,
+.video-wrapper iframe {
+    width: 100%;
+    height: auto;
+    display: block;     
+}
+
+/* Video Controls Styling */
+.video-wrapper video::-webkit-media-controls {
+    background-color: rgba(139, 69, 19, 0.1);   /* Subtle brown tint for controls */
+}
+
+.video-figure figcaption {
+    top: 0;
+    bottom: auto;
+    transform: translateY(-100%);   /* Hides caption above video */
+}
+
+.video-figure:hover figcaption {
+    transform: translateY(0);       /* Shows caption on hover */
+}
+
+/* Year Marker */
+.year-marker {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    padding: 12px 25px;
+    color: var(--vintage-cream);
+    border-radius: 0 20px 20px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: all 0.8s ease 0.3s;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.timeline-item.reveal .year-marker {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Era-specific Markers */
+.timeline-item[data-era="1870s"] .year-marker {
+    background: var(--era1-color);
+}
+
+.timeline-item[data-era="1920s"] .year-marker {
+    background: var(--era2-color);
+}
+
+.timeline-item[data-era="1950s"] .year-marker {
+    background: var(--era3-color);
+}
+
+.timeline-item[data-era="1970s"] .year-marker {
+    background: var(--era4-color);
+}
+
+.timeline-item[data-era="1990s"] .year-marker {
+    background: var(--era5-color);
+}
+
+.timeline-item[data-era="2000s"] .year-marker {
+    background: var(--era6-color);
+}
+
+/* Text Content */
+.text-content {
+    flex: 1;        /* Takes remaining space */
+    padding: 20px;
+}
+
+.text-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4em;
+    color: var(--text-accent);
+    margin-bottom: 1em;
+    border-bottom: 2px solid var(--vintage-gold);
+    padding-bottom: 10px;
+}
+
+.historical-context {
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 1.5em;
+    text-align: justify;
+}
+
+/* Story Quote */
+.story-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4em;
+    color: var(--text-accent);
+    padding: 30px;
+    margin: 30px 0;
+    border-left: 4px solid var(--vintage-gold);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 2px 2px 10px rgba(139, 69, 19, 0.1);
+    position: relative;
+}
+
+.story-quote::before {
+    content: '"';
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 3em;
+    color: var(--vintage-gold);
+    opacity: 0.3;
+}
+
+.quote-author {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* Milestone */
+.milestone {
+    background: rgba(139, 69, 19, 0.05);
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 40px;
+    border: 1px solid var(--vintage-gold);
+    position: relative;
+}
+
+.milestone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--vintage-gold), transparent);
+    border-radius: 12px 12px 0 0;
+}
+
+.milestone h3 {
+    color: var(--vintage-brown);
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    border-bottom: 2px dashed rgba(139, 69, 19, 0.2);
+    padding-bottom: 10px;
+}
+
+.timeline-list {
+    list-style: none;
+}
+
+.timeline-list li {
+    margin: 15px 0;
+    padding-left: 30px;
+    position: relative;
+    transition: transform 0.3s ease;    /* Hover animation */
+}
+
+.timeline-list li::before {
+    content: "•";               /* Bullet point */
+    color: var(--vintage-gold);
+    position: absolute;
+    left: 0;
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+.timeline-list li:hover {
+    transform: translateX(10px);
+}
+
+.timeline-list li a {
+    text-decoration: none;
+    color: var(--text-primary);    
+}
+
+.timeline-list li a:hover {
+    color: var(--text-accent);
+    text-decoration: underline;
+}
+
+/* Scroll Hint */
+.scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    cursor: pointer;
+}
+
+.scroll-hint p {
+    margin-bottom: 10px;
+    color: var(--vintage-brown);
+    font-size: 1.2em;
+}
+
+/* Down arrow styling for "Begin the Journey" */
+.scroll-arrow-down {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-right: 3px solid var(--vintage-brown);
+    border-bottom: 3px solid var(--vintage-brown);
+    margin: 0 auto;
+    animation: bounce 2s infinite;
+}
+
+/* Arrow Animations */
+@keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0) rotate(45deg);
+    }
+
+    40% {
+        transform: translateY(-20px) rotate(45deg);
+    }
+
+    60% {
+        transform: translateY(-10px) rotate(45deg);
+    }
+}
+
+/* Focus States */
+a:focus,
+button:focus {
+    outline: 2px solid var(--vintage-gold);
+    outline-offset: 2px;
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--vintage-gold);
+    outline-offset: 2px;
+    background: rgba(139, 69, 19, 0.1);
+}
+
+/* Enhanced Footer */
+.timeline-footer {
+    text-align: center;
+    padding: 60px 0;
+    margin-top: 100px;
+    border-top: 3px double var(--vintage-brown);
+    color: var(--text-primary);
+}
+
+/* Back to Top styling */
+.back-to-top {
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.back-to-top p {
+    margin-bottom: 10px;
+    color: var(--vintage-brown);
+    font-size: 1.2em;
+}
+
+/* Arrow for Back to Top */
+.back-to-top .scroll-arrow-up {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-left: 3px solid var(--vintage-brown);
+    border-top: 3px solid var(--vintage-brown);
+    margin: 0 auto;
+    animation: bounce 2s infinite;
+}
+
+.back-to-top .copyright {
+    font-size: 1rem;
+}
+
+/* Selection Style */
+::selection {
+    background: var(--vintage-brown);
+    color: var(--vintage-cream);
+}
+
+::-moz-selection {
+    background: var(--vintage-brown);
+    color: var(--vintage-cream);
+}
+
+/* Scrollbar Styling */
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--vintage-paper);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--vintage-brown);
+    border-radius: 6px;
+    border: 3px solid var(--vintage-paper);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--vintage-gold);
+}
+
+/* Firefox-only styles */
+@-moz-document url-prefix() {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--vintage-brown) var(--vintage-paper);
+    }
+    
+    *:hover {
+        scrollbar-color: var(--vintage-gold) var(--vintage-paper);
+    }
+}
+
+/* Responsive Design */
+/* Adapt layout and sizing for different screen sizes */
+@media (max-width: 1200px) {
+    .content {
+        padding: 40px;
+    }
+
+    .vintage-header h1 {
+        font-size: 3.5rem;
+    }
+
+    .image-gallery {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .item-content {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .media-content {
+        max-width: 100%;
+    }
+    
+    figure {
+        border-width: 8px;
+    }
+
+    .text-content {
+        padding: 0;
+    }
+
+    .vintage-header h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .vintage-header {
+        padding: 60px 20px;
+    }
+
+    .vintage-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .timeline-intro {
+        font-size: 1rem;
+    }
+
+    .image-gallery {
+        grid-template-columns: 1fr;
+    }
+    
+    figure {
+        transform: none !important;
+    }
+    
+    figcaption {
+        transform: translateY(0);
+    }
+
+    .text-content h2 {
+        font-size: 2em;
+    }
+
+    .story-quote {
+        font-size: 1.2em;
+        padding: 20px;
+    }
+
+    .year-marker {
+        font-size: 1.2em;
+        padding: 8px 15px;
+    }
+
+    .side-nav {
+        transform: translateX(100%);
+    }
+
+    .side-nav.active {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 576px) {
+    .vintage-header h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .timeline-intro {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+
+    .year-marker {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    .story-quote {
+        font-size: 1.1em;
+        padding: 15px;
+    }
+
+    .milestone {
+        padding: 15px;
+    }
+
+    .timeline-list li {
+        padding-left: 20px;
+    }
+
+    .nav-handle {
+        width: 25px;
+        height: 35px;
+    }
+
+    .item-content {
+        padding: 20px;
+    }
+
+    .text-content h2 {
+        font-size: 1.8em;
+    }
+}
+
+/* Accessibility Enhancements */
+/* Ensure content is accessible and usable for all users */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .scroll-hint {
+        display: none;
+    }
+
+    figure, 
+    figure img,
+    .video-wrapper {
+        transform: none !important;
+        transition: none !important;
+    }
+}
